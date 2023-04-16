@@ -7,10 +7,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.formacaoandroidstudio.recyclerview.R;
+import com.formacaoandroidstudio.recyclerview.activity.adapter.Adapter;
+import com.formacaoandroidstudio.recyclerview.activity.model.Filme;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+
+    private List<Filme> listaFilmes = new ArrayList<Filme>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,18 +26,58 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
 
+        // Listagem de Filmes
+        this.criarFilmes();
+
         // Configurar Adapter
+        // Vamos utilizar o adapter (com.formacaoandroid.recycleview) que você criou e não o Adapter<VH>
+        Adapter adapter = new Adapter();
 
 
         // Configurar RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        /*use esta configuração para melhorar o desempenho se você souber que as alterações no conteúdo não alteram o
+        /* use esta configuração para melhorar o desempenho se você souber que as alterações no conteúdo não alteram o
         tamanho do layout do RecyclerView. Ou seja, otimiza o RecyclerView para um tamanho fixo. */
         recyclerView.setHasFixedSize(true);
 
-        //recyclerView.setAdapter();
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void criarFilmes(){
+
+        Filme filme;
+
+        filme = new Filme("Homem Aranha - De Volta ao Lar", "Aventura", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("Mulher Maravilha", "Fantasia", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("Liga da Justiça", "Ficção", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("Capitão América Guerra Civil", "Aventura/Ficção", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("It: A Coisa", "Drama/Terror", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("Pica-Pau: O Filme", "Comédia/Animação", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("A Múmia", "Terror", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("A Bela e a Fera", "Romance", "2017");
+        listaFilmes.add(filme);
+
+        Filme filme = new Filme("Meu Malvado Favorito 3", "Comédia", "2017");
+        listaFilmes.add(filme);
+
+        filme = new Filme("Carros 3", "Animação", "2017");
+        listaFilmes.add(filme);
     }
 }
 
@@ -90,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
  *    -> onBindViewHolder(): RecyclerView chama esse método para associar um ViewHolder aos dados. O método busca os dados
  *       apropriados e usa esses dados para preencher o layout do fixador de visualização. Por exemplo, se a RecyclerView
  *       exibir uma lista de nomes, o método poderá encontrar o nome apropriado na lista e preencher o widget TextView do
- *       fixador de visualização.
+ *       fixador de visualização. Ou seja, nesse método tem também uma ViewHolder que está associada com o ViewHolder da
+ *       onCreateViewHolder.
  *
  *   -> getItemCount(): a RecyclerView chama esse método para ver o tamanho do conjunto de dados. Por exemplo, em um app
  *      de lista de endereços, pode ser o número total de endereços. O RecyclerView usa essa função para determinar quando

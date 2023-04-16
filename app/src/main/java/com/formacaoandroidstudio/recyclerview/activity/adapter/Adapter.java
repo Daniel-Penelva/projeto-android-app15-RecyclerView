@@ -1,5 +1,6 @@
 package com.formacaoandroidstudio.recyclerview.activity.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -7,35 +8,49 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.formacaoandroidstudio.recyclerview.R;
+
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+
+        View itemLista = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_lista, parent, false);
+        return new MyViewHolder(itemLista);
     }
 
 
     /* Método chamado para criar as visualizações */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
-
+        holder.titulo.setText("Vingadores");
+        holder.genero.setText("Ação");
+        holder.ano.setText("2017");
     }
 
     public int getItemCount(){
-        return 0;
+
+        return 5;
     }
 
+    /* Recuperar os componentes de tela (adapter_lista.xml) */
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         //Atributos dos dados do ViewHolder
-        TextView nome;
+        TextView titulo;
         TextView genero;
-        TextView data;
+        TextView ano;
 
-        // Construtor
+        // Construtor - acessa o objeto view, ou seja, é dentro do 'itemView' que acessa os ids dos componentes
         public MyViewHolder(View itemView){
+
             super(itemView);
+
+            titulo = itemView.findViewById(R.id.textTitulo);
+            genero = itemView.findViewById(R.id.textGenero);
+            ano = itemView.findViewById(R.id.textAno);
+
         }
     }
 }
@@ -58,4 +73,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 *
 * Vamos precisar agora criar um layout adapter, para isso vamos no pacote:
 *  res > layout > layout resource File > nomear de 'adapter_list' > Root Element e digitar LinearLayout > ok
+*
+* Na Classe MyViewHolder:
+*
+* Temos que retornar essa visualização do adapter_lista.xml, ou seja, temo que retorna esse arquivo .xml para cada um
+* desses itens de lista. Primeiro é preciso converter esse arquivo adapter_lista.xml em um objeto do tipo View. Para
+* converter é preciso usar uma classe LayoutInflater, sua função é inflar o xml em uma visualização. Portanto, é a classe
+* responsável por criar uma View a partir de um arquivo XML, portanto, você precisa dele para instanciar e acessar uma View.
+*
+* Vamos usar um getContext que é chamado nos componentes visuais mais internos de uma atividade, como views e fragments.
+* E por fim o método inflate() que recebe três parâmetros, são eles: (1) item de lista (2)View (parent)  (3) boolean (false).
+*
+* Portanto,
+          OnCreateViewHolder - Ele apenas cria a visualização.
+          OnBindViewHolder - Ele exibe a visualização dos itens.
+          getItemCount - Mostra a quantidade de itens que vai ser exibido
+*
 * */
