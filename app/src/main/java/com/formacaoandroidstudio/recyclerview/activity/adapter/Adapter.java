@@ -9,8 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.formacaoandroidstudio.recyclerview.R;
+import com.formacaoandroidstudio.recyclerview.activity.model.Filme;
+
+import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
+
+    private List<Filme> listaFilmes;
+
+    public Adapter(List<Filme> lista) {
+        this.listaFilmes = lista;
+    }
 
     @NonNull
     @Override
@@ -21,17 +30,21 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     }
 
 
-    /* Método chamado para criar as visualizações */
+    /* Método chamado para criar as visualizações, ou seja, que recupera os dados */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
-        holder.titulo.setText("Vingadores");
-        holder.genero.setText("Ação");
-        holder.ano.setText("2017");
+    /* O método get recupera a posição da lista, vai ser passado o position para definir o total da lista.   */
+        Filme filme = listaFilmes.get(position);
+
+    /* Recupera os dados da lista */
+        holder.titulo.setText(filme.getTituloFilme());
+        holder.genero.setText(filme.getGenero());
+        holder.ano.setText(filme.getAno());
     }
 
     public int getItemCount(){
-
-        return 5;
+    /* Descobre o tamanho da lista */
+        return listaFilmes.size();
     }
 
     /* Recuperar os componentes de tela (adapter_lista.xml) */

@@ -1,10 +1,12 @@
 package com.formacaoandroidstudio.recyclerview.activity.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import com.formacaoandroidstudio.recyclerview.R;
 import com.formacaoandroidstudio.recyclerview.activity.adapter.Adapter;
@@ -17,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private List<Filme> listaFilmes = new ArrayList<Filme>();
+    private List<Filme> listaFilmes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Configurar Adapter
         // Vamos utilizar o adapter (com.formacaoandroid.recycleview) que você criou e não o Adapter<VH>
-        Adapter adapter = new Adapter();
+        Adapter adapter = new Adapter(listaFilmes);
 
 
         // Configurar RecyclerView
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         /* use esta configuração para melhorar o desempenho se você souber que as alterações no conteúdo não alteram o
         tamanho do layout do RecyclerView. Ou seja, otimiza o RecyclerView para um tamanho fixo. */
         recyclerView.setHasFixedSize(true);
+
+        /* Criar um divisor na tela para melhor visualização */
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
         recyclerView.setAdapter(adapter);
     }
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         filme = new Filme("It: A Coisa", "Drama/Terror", "2017");
         listaFilmes.add(filme);
 
-        filme = new Filme("Pica-Pau: O Filme", "Comédia/Animação", "2017");
+        filme = new Filme("Pica-Pau: O Filme", "Comedia/Animação", "2017");
         listaFilmes.add(filme);
 
         filme = new Filme("A Múmia", "Terror", "2017");
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         filme = new Filme("A Bela e a Fera", "Romance", "2017");
         listaFilmes.add(filme);
 
-        Filme filme = new Filme("Meu Malvado Favorito 3", "Comédia", "2017");
+        filme = new Filme("Meu Malvado Favorito 3", "Comédia", "2017");
         listaFilmes.add(filme);
 
         filme = new Filme("Carros 3", "Animação", "2017");
