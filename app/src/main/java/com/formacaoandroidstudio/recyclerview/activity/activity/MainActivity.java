@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.formacaoandroidstudio.recyclerview.R;
+import com.formacaoandroidstudio.recyclerview.activity.ClickListener;
 import com.formacaoandroidstudio.recyclerview.activity.adapter.Adapter;
 import com.formacaoandroidstudio.recyclerview.activity.model.Filme;
 
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(listaFilmes);
 
 
-        // Configurar RecyclerView
+        /* Configurar RecyclerView */
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
@@ -46,8 +50,31 @@ public class MainActivity extends AppCompatActivity {
 
         /* Criar um divisor na tela para melhor visualização */
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-
         recyclerView.setAdapter(adapter);
+
+        /* Evento de Click para mostrar através do Toast o nome do Título do filme*/
+        recyclerView.addOnItemTouchListener(new ClickListener(getApplicationContext(), recyclerView, new ClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+               // Instancia um filme
+                Filme filme = listaFilmes.get(position);
+               // Cria um Toast e captura pelo getTituloFilme
+                Toast.makeText(getApplicationContext(), "Item Pressionado - " + filme.getTituloFilme(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+                // Instancia um filme
+                Filme filme = listaFilmes.get(position);
+                // Cria um Toast e captura pelo getTituloFilme
+                Toast.makeText(getApplicationContext(), "Click Long - " + filme.getTituloFilme(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        }));
     }
 
     public void criarFilmes(){
@@ -148,5 +175,50 @@ public class MainActivity extends AppCompatActivity {
  *   -> getItemCount(): a RecyclerView chama esse método para ver o tamanho do conjunto de dados. Por exemplo, em um app
  *      de lista de endereços, pode ser o número total de endereços. O RecyclerView usa essa função para determinar quando
  *      não há mais itens a serem exibidos.
+ *
+ *  ------------------------------------------------
+ *  Vamos fazer o reuso de uma Classe que é padrão do Google para eventos de click.
+ *
+ * No Android, há mais de uma maneira de interceptar os eventos da interação de um usuário com o app. Ao considerar os eventos dentro
+ * da interface do usuário, a abordagem é capturar os eventos de um objeto View específico com que o usuário interage. A classe
+ * View fornece os meios para fazer isso.
+ *
+ * Dentro das várias classes View que você usará para compor o layout, é possível notar vários métodos públicos de callback que
+ * parecem úteis para eventos de IU. Esses métodos são chamados pelo framework do Android quando a ação em questão ocorre nesse
+ * objeto. Por exemplo, quando uma View (como um botão) é tocada, o método onTouchEvent() é chamado neste objeto. No entanto, para
+ * interceptar esse evento, você precisa estender a classe e substituir o método. Além disso, estender todos os objetos View para
+ * lidar com tal evento não seria algo prático. É por isso que a classe View também contém uma coleção de interfaces aninhadas com
+ * callbacks que podem ser definidas com muito mais facilidade. Essas interfaces, chamadas de listeners de eventos, são a forma de
+ * capturar a interação do usuário com a IU.
+ *
+ * Geralmente, os listeners de eventos são usados para detectar a interação do usuário. No entanto, pode haver casos em que você
+ * queira estender uma classe View para criar um componente personalizado. Talvez você queira estender a classe Button para deixar
+ * algo mais sofisticado. Neste caso, você poderá definir os comportamentos de eventos padrão para a classe usando manipuladores de
+ * eventos.
+ *
+ * Listeners de eventos
+ * Um listener de eventos é uma interface na classe View que contém um único método de callback. Esses métodos serão chamados pelo
+ * framework do Android quando a View a que o listener estiver registrado for ativada pela interação do usuário com o item na IU.
+ * Os seguintes métodos de callback estão incluídos nas interfaces do listener de eventos:
+ *
+ * onClick()
+ * De View.OnClickListener. É chamado quando o usuário toca no item (no modo de toque) ou foca no item com as teclas de navegação ou
+ * o trackball e pressiona a tecla "Enter" adequada ou pressiona o trackball.
+ *
+ * onLongClick()
+ * De View.OnLongClickListener. É chamado quando o usuário mantém o item pressionado (no modo de toque) ou foca no item com as teclas
+ * de navegação ou o trackball e mantém pressionada a tecla "Enter" adequada ou mantém o trackball pressionado (por um segundo).
+ *
+ * onFocusChange()
+ * De View.OnFocusChangeListener. É chamado quando o usuário navega para ou do item usando as teclas de navegação ou o trackball.
+ *
+ * onKey()
+ * De View.OnKeyListener. É chamado quando o usuário está com foco no item e pressiona ou solta uma tecla de hardware no dispositivo.
+ *
+ * onTouch()
+ * De View.OnTouchListener. É chamado quando o usuário realiza uma ação qualificada como um evento de toque, incluindo o pressionamento, a liberação ou qualquer outro gesto de movimento na tela (dentro dos limites do item).
+ *
+ * onCreateContextMenu()
+ * De View.OnCreateContextMenuListener. É chamado quando um menu de contexto está sendo criado (como resultado de um "clique longo"). Consulte a discussão sobre menus de contexto no guia do desenvolvedor de Menus.
  *
  **/
